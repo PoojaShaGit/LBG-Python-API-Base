@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-app
+  name: nginx-python-app
   labels:
-    app: nginx-app-custom
+    app: nginx-pyapp-custom
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: nginx-app-custom
+      app: nginx-pyapp-custom
   strategy:
     rollingUpdate:
       maxSurge: 10%
@@ -16,10 +16,10 @@ spec:
   template:
     metadata:
       labels:
-        app: nginx-app-custom
+        app: nginx-pyapp-custom
     spec:
       containers:
-      - name: nginx-app-container
+      - name: nginx-pyapp-container
         image: poojasdocker2023/nginx-app-cutom:latest
         ports:
         - containerPort: 80
@@ -27,11 +27,11 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: nginx-app-service
+  name: nginx-pyapp-service
 spec:
   type: LoadBalancer
   selector:
-    app: nginx-app-custom
+    app: nginx-pyapp-custom
   ports:
   - protocol: TCP
     port: 80
