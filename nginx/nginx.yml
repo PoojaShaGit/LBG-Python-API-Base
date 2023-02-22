@@ -21,7 +21,7 @@ spec:
       containers:
       - name: nginx-pyapp-container
         image: eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:latest
-        imagePolicy: Always
+        imagePullPolicy: Always
         ports:
         - containerPort: 81
 ---
