@@ -31,6 +31,8 @@ pipeline {
             steps {
                sh '''
                kubectl apply -f .
+               kubectl rollout restart deployment lbg-python-app
+               kubectl rollout restart deployment nginx-python-app
                cd ./nginx
                kubectl apply -f .         
                '''

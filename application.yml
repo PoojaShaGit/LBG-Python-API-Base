@@ -21,6 +21,7 @@ spec:
       containers:
       - name: python-app-container
         image: eu.gcr.io/lbg-cloud-incubation/python-app:latest
+        imagePolicy: Always
         ports:
         - containerPort: 8081
 ---
