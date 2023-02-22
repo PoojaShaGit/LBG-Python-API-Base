@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: nginx-pyapp-container
-        image: poojasdocker2023/nginx-pyapp-custom:latest
+        image: eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:latest
         ports:
         - containerPort: 81
 ---

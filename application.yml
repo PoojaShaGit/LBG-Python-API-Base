@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: python-app-container
-        image: poojasdocker2023/python-app:latest
+        image: eu.gcr.io/lbg-cloud-incubation/python-app:latest
         ports:
         - containerPort: 8081
 ---
