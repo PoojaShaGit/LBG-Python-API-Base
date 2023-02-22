@@ -22,7 +22,7 @@ spec:
       - name: nginx-pyapp-container
         image: poojasdocker2023/nginx-pyapp-custom:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 80
 ---
 kind: Service
 apiVersion: v1
@@ -34,5 +34,5 @@ spec:
     app: nginx-pyapp-custom
   ports:
   - protocol: TCP
-    port: 8080
-    targetPort: 8080
+    port: 80
+    targetPort: 80
