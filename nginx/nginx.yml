@@ -1,7 +1,15 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: {{namespace}}
+  labels:
+    name: {{namespace}}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-python-app
+  namespace: {{namespace}}
   labels:
     app: nginx-pyapp-custom
 spec:
@@ -29,6 +37,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: nginx-pyapp-service
+  namespace: {{namespace}}
 spec:
   type: LoadBalancer
   selector:

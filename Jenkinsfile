@@ -29,14 +29,32 @@ pipeline {
 
         stage('Deploy Application to the Cluster') {
             steps {
-               sh '''
-               kubectl apply -f .
-               kubectl rollout restart deployment lbg-python-app
-               kubectl rollout restart deployment nginx-python-app
-               cd ./nginx
-               kubectl apply -f .         
-               '''
-            }
+               script
+               {
+                if ("${GIT_BRANCH}" == 'origin/main'){
+                    sh '''
+                    sed -e 's,{{namespace}},production,g;' flask-app.yml | kubectl apply -f
+                    kubectl apply -f .
+                    kubectl rollout restart deployment lbg-python-app
+                    kubectl rollout restart deployment nginx-python-app
+                    cd ./nginx
+                    kubectl apply -f .         
+                    '''
+               }
+               else if("${GIT_BRANCH}" == 'origin/ps-python-apibranch')
+               {
+                    sh '''
+                    sed -e 's,{{namespace}},development,g;' flask-app.yml | kubectl apply -f
+                    kubectl apply -f .
+                    kubectl rollout restart deployment lbg-python-app
+                    kubectl rollout restart deployment nginx-python-app
+                    cd ./nginx
+                    kubectl apply -f .         
+                    '''
+               } 
+
+            }          
         }
-     }
+      }
+   }
 }
