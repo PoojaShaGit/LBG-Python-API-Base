@@ -33,23 +33,21 @@ pipeline {
                {
                 if ("${GIT_BRANCH}" == 'origin/main'){
                     sh '''
-                    sed -e 's,{{namespace}},production,g;' flask-app.yml | kubectl apply -f
-                    kubectl apply -f .
+                    sed -e 's,{{namespace}},production,g;' application.yml | kubectl apply -f -
                     kubectl rollout restart deployment lbg-python-app
                     kubectl rollout restart deployment nginx-python-app
                     cd ./nginx
-                    kubectl apply -f .         
+                    sed -e 's,{{namespace}},production,g;' nginx.yml | kubectl apply -f -
                     '''
                }
                else if("${GIT_BRANCH}" == 'origin/ps-python-apibranch')
                {
                     sh '''
-                    sed -e 's,{{namespace}},development,g;' flask-app.yml | kubectl apply -f
-                    kubectl apply -f .
+                    sed -e 's,{{namespace}},development,g;' application.yml | kubectl apply -f -
                     kubectl rollout restart deployment lbg-python-app
                     kubectl rollout restart deployment nginx-python-app
                     cd ./nginx
-                    kubectl apply -f .         
+                    sed -e 's,{{namespace}},development,g;' nginx.yml | kubectl apply -f -         
                     '''
                } 
 
