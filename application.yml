@@ -1,7 +1,15 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: {{namespace}}
+  labels:
+    name: {{namespace}}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: lbg-python-app
+  namespace: {{namespace}}
   labels:
     app: python-app
 spec:
@@ -29,6 +37,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: python-app-service
+  namespace: {{namespace}}
 spec:
   type: ClusterIP
   selector:
