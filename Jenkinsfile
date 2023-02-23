@@ -27,7 +27,7 @@ pipeline {
                {
                 if ("${GIT_BRANCH}" == 'origin/main'){
                     sh '''
-                    echo "No Push Required in Main"
+                    echo "No Build Required in Main"
                     '''
                }
                else if("${GIT_BRANCH}" == 'origin/ps-python-apibranch')
@@ -44,12 +44,25 @@ pipeline {
         }
         stage('Push Image to Hub') {
             steps {
+                script
+               {
+                if ("${GIT_BRANCH}" == 'origin/main'){
+                    sh '''
+                    echo "No Push Required in Main"
+                    '''
+               }
+               else if("${GIT_BRANCH}" == 'origin/ps-python-apibranch')
+               {
                 sh '''
                 docker push eu.gcr.io/lbg-cloud-incubation/python-app:latest
                 docker push eu.gcr.io/lbg-cloud-incubation/python-app:build-$BUILD_NUMBER
                 docker push eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:latest
                 docker push eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:build-$BUILD_NUMBER
                 '''
+               } 
+
+            }
+                
             }
         }
 
