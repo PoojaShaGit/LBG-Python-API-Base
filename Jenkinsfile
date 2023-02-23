@@ -21,27 +21,27 @@ pipeline {
                 
            }
         }
-        stage('Build NGINX App') {
-            steps {
-                script
-               {
-                if ("${GIT_BRANCH}" == 'origin/main'){
-                    sh '''
-                    echo "No Build Required in Main"
-                    '''
-               }
-               else if("${GIT_BRANCH}" == 'origin/ps-python-apibranch')
-               {
-                    sh '''
-                    cd nginx
-                    docker build -t eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:latest -t eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:build-$BUILD_NUMBER .
-                    '''
-               } 
+        // stage('Build NGINX App') {
+        //     steps {
+        //         script
+        //        {
+        //         if ("${GIT_BRANCH}" == 'origin/main'){
+        //             sh '''
+        //             echo "No Build Required in Main"
+        //             '''
+        //        }
+        //        else if("${GIT_BRANCH}" == 'origin/ps-python-apibranch')
+        //        {
+        //             sh '''
+        //             cd nginx
+        //             docker build -t eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:latest -t eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:build-$BUILD_NUMBER .
+        //             '''
+        //        } 
 
-            }            
+        //     }            
                 
-           }
-        }
+        //    }
+        // }
         stage('Push Image to Hub') {
             steps {
                 script
@@ -56,8 +56,6 @@ pipeline {
                 sh '''
                 docker push eu.gcr.io/lbg-cloud-incubation/python-app:latest
                 docker push eu.gcr.io/lbg-cloud-incubation/python-app:build-$BUILD_NUMBER
-                docker push eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:latest
-                docker push eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:build-$BUILD_NUMBER
                 '''
                } 
 
