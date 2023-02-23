@@ -3,17 +3,43 @@ pipeline {
     stages {
         stage('Build Docker App') {
             steps {
-                sh '''
-                docker build -t eu.gcr.io/lbg-cloud-incubation/python-app:latest -t eu.gcr.io/lbg-cloud-incubation/python-app:build-$BUILD_NUMBER .
-                '''
+                script
+               {
+                if ("${GIT_BRANCH}" == 'origin/main'){
+                    sh '''
+                    echo "No Build Required in Main"
+                    '''
+               }
+               else if("${GIT_BRANCH}" == 'origin/ps-python-apibranch')
+               {
+                    sh '''
+                    docker build -t eu.gcr.io/lbg-cloud-incubation/python-app:latest -t eu.gcr.io/lbg-cloud-incubation/python-app:build-$BUILD_NUMBER .
+                    '''
+               } 
+
+            }
+                
            }
         }
         stage('Build NGINX App') {
             steps {
-                sh '''
-                cd nginx
-                docker build -t eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:latest -t eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:build-$BUILD_NUMBER .
-                '''
+                script
+               {
+                if ("${GIT_BRANCH}" == 'origin/main'){
+                    sh '''
+                    echo "No Push Required in Main"
+                    '''
+               }
+               else if("${GIT_BRANCH}" == 'origin/ps-python-apibranch')
+               {
+                    sh '''
+                    cd nginx
+                    docker build -t eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:latest -t eu.gcr.io/lbg-cloud-incubation/nginx-pyapp-custom:build-$BUILD_NUMBER .
+                    '''
+               } 
+
+            }            
+                
            }
         }
         stage('Push Image to Hub') {
@@ -54,5 +80,11 @@ pipeline {
             }          
         }
       }
+      stage('Clean Up')
+      {
+        steps{
+        sh 'docker system prune -f'
+      }
    }
+}
 }
